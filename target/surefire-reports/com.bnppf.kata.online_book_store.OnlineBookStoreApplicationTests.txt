@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.bnppf.kata.online_book_store.OnlineBookStoreApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.658 s -- in com.bnppf.kata.online_book_store.OnlineBookStoreApplicationTests
