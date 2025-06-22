@@ -2,8 +2,10 @@ package com.bnppf.kata.online_book_store.service;
 
 import com.bnppf.kata.online_book_store.dto.BookDTO;
 import com.bnppf.kata.online_book_store.entity.Book;
+import com.bnppf.kata.online_book_store.exception.DataNotFoundException;
 import com.bnppf.kata.online_book_store.repository.BookRepository;
 import com.bnppf.kata.online_book_store.utility.BookMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)  // Automatically initializes mocks for JUnit 5
 class BookServiceImplTest {
     @InjectMocks
@@ -44,7 +47,7 @@ class BookServiceImplTest {
         bookDTO2 = new BookDTO(2L, "Clean Code", "Robert C. Martin", 38.50);
     }
 
-    // Test for getAllBooks
+    // Test case 1:for getAllBooks
     @Test
     void testGetAllBooks() {
         // Setup mock behavior
@@ -63,5 +66,20 @@ class BookServiceImplTest {
         // Verify if the repository method was called once
         verify(bookRepository, times(1)).findAll();
     }
+    // Test case 2: When no books are found (empty list)
+    @Test
+    void testGetAllBooksEmptyList() {
+        // when: Mock repository to return an empty list
+        when(bookRepository.findAll()).thenReturn(List.of());
+
+        //  Check that the DataNotFoundException is thrown
+        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> bookService.getAllBooks());
+        String noBooksFound = "No books found";
+        log.info(noBooksFound);
+        assertEquals(noBooksFound, exception.getMessage());
+    }
+
+
+
 
 }
