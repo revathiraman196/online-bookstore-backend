@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Slf4j
+@Profile("local") // This ensures the bean is only created if the 'local' profile is active
 public class DataInitializer {
     /**
      * It will check if books already exist in the database and will only insert data if none exists.
