@@ -14,9 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class CartControllerTest {
@@ -72,6 +71,43 @@ class CartControllerTest {
                         .param("quantity", String.valueOf(quantity))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+    @Test
+    void deleteCartItemById_ShouldReturnSuccessMessage() throws Exception {
+        Long cartItemId = 1L;
+
+        // No need to mock cartService.removeFromCart since it returns void and no exception expected here
+
+        mockMvc.perform(delete("/api/v1/cart/items/{cartItemId}", cartItemId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Cart item deleted successfully"));
+
+        verify(cartService, times(1)).removeFromCart(cartItemId);
+    }
+    @Test
+    void updateCartItemQuantity_ShouldReturnUpdatedDto() throws Exception {
+        // Arrange
+        Long cartItemId = 1L;
+        int quantity = 5;
+
+        CartItemDto updatedDto = new CartItemDto();
+        // Optionally set fields on updatedDto, e.g., updatedDto.setQuantity(quantity);
+
+        when(cartService.updateCartItemQuantity(cartItemId, quantity)).thenReturn(updatedDto);
+
+        // Act & Assert
+        mockMvc.perform(put("/api/v1/cart/items/update", cartItemId)
+                        .param("quantity", String.valueOf(quantity))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        // You can add JSON path checks here if CartItemDto has fields to verify
+        //.andExpect(jsonPath("$.quantity").value(quantity))
+        ;
+
+        // Verify service method was called once with correct params
+        verify(cartService, times(1)).updateCartItemQuantity(cartItemId, quantity);
     }
 
 }

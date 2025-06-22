@@ -43,5 +43,25 @@ public class CartController {
         log.info("Cart item with ID: {} deleted successfully", cartItemId);
         return ResponseEntity.ok("Cart item deleted successfully");
     }
+    /**
+     * Updates the quantity of a cart item identified by its ID.
+     *
+     * @param cartItemId the ID of the cart item to update
+     * @param quantity   the new quantity to set
+     * @return ResponseEntity with updated CartItemDto and HTTP 200 status
+     */
+    @PutMapping("/items/{cartItemId}")
+    public ResponseEntity<CartItemDto> updateCartItemQuantity(
+            @PathVariable Long cartItemId,
+            @RequestParam int quantity) {
+
+        log.info("Request received to update quantity of cart item ID {} to {}", cartItemId, quantity);
+
+        // Delegate the update operation to the service layer
+        CartItemDto updatedItem = cartService.updateCartItemQuantity(cartItemId, quantity);
+
+        // Return the updated cart item DTO with HTTP 200 OK status
+        return ResponseEntity.ok(updatedItem);
+    }
 
 }

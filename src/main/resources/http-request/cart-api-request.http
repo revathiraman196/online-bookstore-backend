@@ -6,13 +6,17 @@ POST http://localhost:8081/api/v1/cart/add?
 ###  non existing bookId
 POST http://localhost:8081/api/v1/cart/add?
     bookId=2&
-    quantity=2
+    quantity=1
 
 ###
 DELETE http://localhost:8081/api/v1/cart/items/1
 
 ### non existing Id
 DELETE http://localhost:8081/api/v1/cart/items/4
+
+
+###
+PUT http://localhost:8081/api/v1/cart/items/1?quantity=4
 
 
 
