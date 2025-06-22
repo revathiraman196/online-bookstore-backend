@@ -2,7 +2,6 @@ package com.bnppf.kata.online_book_store.controller;
 
 import com.bnppf.kata.online_book_store.dto.BookDTO;
 import com.bnppf.kata.online_book_store.service.BookService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
