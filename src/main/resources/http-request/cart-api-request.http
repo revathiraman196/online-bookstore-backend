@@ -1,0 +1,18 @@
+###
+POST http://localhost:8081/api/v1/cart/add?
+    bookId=1&
+    quantity={{$random.integer(2)}}
+
+
+
+###
+POST http://localhost:8081/api/v1/cart/add?
+    bookId={{$random.integer(100)}}&
+    quantity={{$random.integer(100)}}
+    Content-Type: application/x-www-form-urlencoded
+
+###
+POST http://localhost:8081/api/v1/cart/add?
+    bookId=0&
+    quantity={{$random.integer(2)}}
+

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/books")
+@RequestMapping("/api/v1/")
 @RequiredArgsConstructor  // Lombok generates constructor for final fields
 @Slf4j                   // Lombok for logging
 public class BookController {
@@ -23,7 +23,7 @@ public class BookController {
      * Get all books
      * @return list of BookDTOs
      */
-    @GetMapping
+    @GetMapping("books")
     public ResponseEntity<?> getAllBooks() {
         log.info("Received request to fetch all books");
         List<BookDTO> books = bookService.getAllBooks(); // can throw exceptions
