@@ -16,7 +16,7 @@ public class CartItem {
     private Long id;
     private Long bookId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
     private Integer quantity;
 }
