@@ -31,23 +31,8 @@ public class BookController {
     @GetMapping
     public ResponseEntity<?> getAllBooks(HttpServletRequest request) {
         log.info("Received request to fetch all books");
-        try {
-            List<BookDTO> books = bookService.getAllBooks();
-            return ResponseEntity.ok(books);
-        } catch (DataNotFoundException ex) {
-            log.warn("No content to return: {}", ex.getMessage());
-            return ResponseEntity.noContent().build();
-        } catch (Exception ex) {
-            log.error("Unexpected error: ", ex);
-            ErrorResponse error = new ErrorResponse(
-                    LocalDateTime.now(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "Internal Server Error",
-                    "Unexpected error occurred while fetching books",
-                    request.getRequestURI()
-            );
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-        }
+        List<BookDTO> books = bookService.getAllBooks(); // can throw exceptions
+        return ResponseEntity.ok(books);
     }
 
 

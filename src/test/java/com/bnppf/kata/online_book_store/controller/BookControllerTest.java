@@ -2,6 +2,7 @@ package com.bnppf.kata.online_book_store.controller;
 
 import com.bnppf.kata.online_book_store.dto.BookDTO;
 import com.bnppf.kata.online_book_store.exception.DataNotFoundException;
+import com.bnppf.kata.online_book_store.exception.GlobalExceptionHandler;
 import com.bnppf.kata.online_book_store.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,9 @@ class BookControllerTest {
     // Helper method to initialize MockMvc before each test
     @BeforeEach
     void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(bookController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
     /**
      * TestCase:1 successful retrieval of book list
@@ -95,7 +98,7 @@ class BookControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.status").value(500))
                 .andExpect(jsonPath("$.error").value("Internal Server Error"))
-                .andExpect(jsonPath("$.message").value("Unexpected error occurred while fetching books"))
+                .andExpect(jsonPath("$.message").value("Unexpected error occurred while processing the request"))
                 .andExpect(jsonPath("$.path").value("/api/v1/books"));
 
         verify(bookService, times(1)).getAllBooks();
