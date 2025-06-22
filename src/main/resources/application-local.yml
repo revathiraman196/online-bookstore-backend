@@ -20,7 +20,3 @@ spring:
       platform: h2
 server:
   port: 8081
-allowed-origin: "http://localhost:3000"
-auth:
-  username: katatest
-  password: katatest@123

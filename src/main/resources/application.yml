@@ -3,4 +3,7 @@ spring:
     name: online-book-store
   profiles:
     active: local
-
+allowed-origin: "http://localhost:3000"
+auth:
+  username: katatest
+  password: katatest@123

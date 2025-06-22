@@ -3,9 +3,9 @@ info:
   title: Online Book Store API
   description: API documentation for the Online Book Store project
   version: 1.0.0
-contact:
-  name: SquadName
-  email: squadEmailAddress
+  contact:
+    name: SquadName
+    email: squadEmailAddress
 
 servers:
   - url: http://localhost:8081
@@ -15,12 +15,17 @@ servers:
   - url: http://bookstorepp.secure.bnppf:8080
     description: pp server
 
+security:
+  - basicAuth: []
+
 paths:
   /books:
     get:
       summary: Get all books
       description: Returns a list of all books available in the bookstore.
       operationId: getAllBooks
+      security:
+        - basicAuth: []
       responses:
         '200':
           description: A list of books.
@@ -54,6 +59,8 @@ paths:
   /cart/add:
     post:
       summary: Add a book to the cart with a quantity
+      security:
+        - basicAuth: []
       parameters:
         - name: bookId
           in: query
@@ -105,6 +112,8 @@ paths:
   /cart/items/{cartItemId}:
     delete:
       summary: Delete a cart item by its ID
+      security:
+        - basicAuth: []
       parameters:
         - name: cartItemId
           in: path
@@ -135,6 +144,8 @@ paths:
 
     put:
       summary: Update the quantity of a cart item by ID
+      security:
+        - basicAuth: []
       parameters:
         - name: cartItemId
           in: path
@@ -184,6 +195,11 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
 components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+
   schemas:
     BookDTO:
       type: object

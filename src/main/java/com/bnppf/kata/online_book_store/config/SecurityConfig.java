@@ -1,4 +1,4 @@
-package eu.europa.europarl.prizes.config;
+package com.bnppf.kata.online_book_store.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,10 +63,8 @@ public class SecurityConfig {
                 .cors(corsConfiguration -> corsConfiguration.configurationSource(corsConfigurationSource()) )
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(AUTH_WHITELIST)
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
+                                .requestMatchers(AUTH_WHITELIST).permitAll()
+                                .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) ->
@@ -81,7 +79,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        LOG.debug("username {} :: password {}",username,password);
+        LOG.info("username {} :: password {}",username,password);
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withUsername(username)
                 .password(passwordEncoder().encode(password))
