@@ -40,13 +40,11 @@ class CartServiceImplTest {
     private Book book1; //Book entity class
 
     /**
-     * Test case: Book exists and is successfully added to the cart.
-     *
+     * Test case: Book exists and is successfully added to the cart.*
      * Scenario:
      * - A book with the specified ID exists in the repository.
      * - No existing CartItem is found for this book, so a new CartItem is created.
-     * - The quantity is added, saved, and converted to a DTO.
-     *
+     * - The quantity is added, saved, and converted to a DTO.*
      * Expected:
      * - The returned CartItemDto reflects the correct quantity.
      * - The save method is invoked once.
@@ -88,11 +86,9 @@ class CartServiceImplTest {
     }
 
     /**
-     * Test case: Book is not found in the repository.
-     *
+     * Test case: Book is not found in the repository.*
      * Scenario:
-     * - The repository returns an empty Optional for the given book ID.
-     *
+     * - The repository returns an empty Optional for the given book ID.*
      * Expected:
      * - A DataNotFoundException is thrown.
      * - No cart item is saved.
