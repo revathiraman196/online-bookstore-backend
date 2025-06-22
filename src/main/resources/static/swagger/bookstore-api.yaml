@@ -1,11 +1,12 @@
 openapi: 3.0.3
 info:
-  title: Online Bookstore API
-  description: REST API for Online Bookstore
+  title: Online Book Store API
+  description: API documentation for the Online Book Store project
   version: 1.0.0
-  contact:
-    name: SquadName
-    email: squadEmailAddress
+contact:
+  name: SquadName
+  email: squadEmailAddress
+
 servers:
   - url: http://localhost:8081
     description: Local server
@@ -13,32 +14,170 @@ servers:
     description: dev server
   - url: http://bookstorepp.secure.bnppf:8080
     description: pp server
-security:
-  - BasicAuth: []  # Applying BasicAuth globally to all endpoints
+
 paths:
-  /api/v1/books:
+  /books:
     get:
       summary: Get all books
-      description: Returns a list of all books available in the bookstore
-      security:
-        - BasicAuth: [ ]  # Securing this endpoint with BasicAuth
+      description: Returns a list of all books available in the bookstore.
+      operationId: getAllBooks
       responses:
         '200':
-          description: A JSON array of book objects
+          description: A list of books.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Book'
+                  $ref: '#/components/schemas/BookDTO'
+        '404':
+          description: No books found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                noBooks:
+                  summary: No books found example
+                  value:
+                    status: 404
+                    error: Not Found
+                    message: No books found
+                    path: /api/v1/books
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cart/add:
+    post:
+      summary: Add a book to the cart with a quantity
+      parameters:
+        - name: bookId
+          in: query
+          description: ID of the book to add
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: quantity
+          in: query
+          description: Quantity to add
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cart item added or updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItemDto'
         '400':
-          description: Bad request — Invalid query parameters or filters
+          description: Bad request (e.g., invalid quantity).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidQuantity:
+                  summary: Invalid quantity example
+                  value:
+                    status: 400
+                    error: Bad Request
+                    message: Quantity must be greater than zero
+                    path: /api/v1/cart/add
+        '404':
+          description: Book not found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
-          description: Internal server error — Unexpected server issue
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cart/items/{cartItemId}:
+    delete:
+      summary: Delete a cart item by its ID
+      parameters:
+        - name: cartItemId
+          in: path
+          description: ID of the cart item to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Cart item deleted successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Cart item not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update the quantity of a cart item by ID
+      parameters:
+        - name: cartItemId
+          in: path
+          description: ID of the cart item to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: quantity
+          in: query
+          description: New quantity to set
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cart item quantity updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItemDto'
+        '400':
+          description: Bad request (e.g., invalid quantity).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidQuantity:
+                  summary: Invalid quantity example
+                  value:
+                    status: 400
+                    error: Bad Request
+                    message: Quantity must be greater than zero
+                    path: /api/v1/cart/items/{cartItemId}
+        '404':
+          description: Cart item not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
           content:
             application/json:
               schema:
@@ -46,38 +185,64 @@ paths:
 
 components:
   schemas:
-    Book:
+    BookDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
           example: 1
+          description: Unique identifier of the book
         title:
           type: string
-          example: The Pragmatic Programmer
+          example: Clean Code
+          description: Title of the book
         author:
           type: string
-          example: Andy Hunt
+          example: Robert C. Martin
+          description: Author of the book
         price:
           type: number
           format: double
-          example: 42.99
+          example: 29.99
+          description: Price of the book
+
+    CartItemDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100
+          description: Unique identifier of the cart item
+        book:
+          $ref: '#/components/schemas/BookDTO'
+        quantity:
+          type: integer
+          example: 3
+          description: Quantity of the book in the cart
+
     ErrorResponse:
       type: object
       properties:
         timestamp:
           type: string
           format: date-time
-          example: "2025-06-21T14:32:00Z"
+          example: '2025-06-22T12:00:00Z'
+          description: Time the error occurred
         status:
           type: integer
-          example: 500
+          example: 404
+          description: HTTP status code
         error:
           type: string
-          example: Internal Server Error
+          example: Not Found
+          description: HTTP status description
         message:
           type: string
-          example: Unexpected error occurred while retrieving book list
+          example: Book not found
+          description: Detailed error message
         path:
           type: string
           example: /api/v1/books
+          description: Request path that caused the error
