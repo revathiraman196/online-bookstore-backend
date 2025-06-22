@@ -25,7 +25,7 @@ public class BookController {
      * @return list of BookDTOs
      */
     @GetMapping
-    public ResponseEntity<?> getAllBooks(HttpServletRequest request) {
+    public ResponseEntity<?> getAllBooks() {
         log.info("Received request to fetch all books");
         List<BookDTO> books = bookService.getAllBooks(); // can throw exceptions
         return ResponseEntity.ok(books);
