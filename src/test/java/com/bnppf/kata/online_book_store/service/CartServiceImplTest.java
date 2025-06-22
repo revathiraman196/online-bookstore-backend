@@ -39,7 +39,7 @@ class CartServiceImplTest {
     private CartServiceImpl cartService;
     private Book book1; //Book entity class
 
-    /**
+    /*
      * Test case: Book exists and is successfully added to the cart.*
      * Scenario:
      * - A book with the specified ID exists in the repository.
@@ -85,7 +85,7 @@ class CartServiceImplTest {
         verify(cartItemRepository).save(any(CartItem.class));
     }
 
-    /**
+    /*
      * Test case: Book is not found in the repository.*
      * Scenario:
      * - The repository returns an empty Optional for the given book ID.*
