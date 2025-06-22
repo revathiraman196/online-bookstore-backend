@@ -1,0 +1,9 @@
+###
+GET http://localhost:8081/api/v1/books
+
+<> 2025-06-22T122102.404.json
+
+###
+GET http://localhost:8081/api/v1/books
+
+<> 2025-06-22T122242.200.json
