@@ -20,3 +20,18 @@ spring:
       platform: h2
 server:
   port: 8081
+#Authenticating API with below User Details
+auth:
+  username: katatest
+  password: katatest@123
+#allowing call come from React App
+allowed-origin: "http://localhost:3000"
+#Logging setting
+logging:
+  level:
+    root: INFO                # Default logging level for all packages
+  file:
+    name: logs/app.log        # Log file name and location
+  pattern:
+    console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"   # Console log pattern
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"  # File log pattern

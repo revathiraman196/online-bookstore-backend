@@ -79,7 +79,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        LOG.info("username {} :: password {}",username,password);
+        LOG.debug("username {} :: password {}",username,password);
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withUsername(username)
                 .password(passwordEncoder().encode(password))
