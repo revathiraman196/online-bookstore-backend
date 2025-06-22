@@ -1,6 +1,7 @@
 package com.bnppf.kata.online_book_store.controller;
 
 import com.bnppf.kata.online_book_store.dto.BookDTO;
+import com.bnppf.kata.online_book_store.exception.DataNotFoundException;
 import com.bnppf.kata.online_book_store.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,10 @@ class BookControllerTest {
     void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
     }
-    //TestCase 1 : Test all books has been returned when trigger /api/v1/books
+    /**
+     * TestCase:1 successful retrieval of book list
+     */
+
     @Test
     void givenBooks_whenGetAllBooks_thenReturnList() throws Exception {
         // Given: Setup mock behavior - bookService will return a predefined list of books when getAllBooks() is called
@@ -62,6 +66,39 @@ class BookControllerTest {
         verify(bookService, times(1)).getAllBooks();
         // Verify that no other interactions with bookService happened beyond what was expected
         verifyNoMoreInteractions(bookService);
+    }
+
+    /**
+     * TestCase:2 for no books found (empty list triggers DataNotFoundException)
+     */
+    @Test
+    void testGetAllBooks_Returns204NoContent() throws Exception {
+        // Given: Setup mock behavior - bookService will return Exception when list is empty
+        when(bookService.getAllBooks()).thenThrow(new DataNotFoundException("No books found"));
+        // When: Perform an HTTP GET request on the /api/v1/books endpoint with JSON content type
+        mockMvc.perform(get("/api/v1/books")
+                        .contentType(MediaType.APPLICATION_JSON))
+                // Then: Expect no content
+                .andExpect(status().isNoContent());
+        // Verify that bookService.getAllBooks() was called exactly once during the test
+        verify(bookService, times(1)).getAllBooks();
+    }
+    /**
+     * TestCase3: When unexpected exception occurs, return 500 with ErrorResponse
+     */
+    @Test
+    void getAllBooks_ReturnsInternalServerError() throws Exception {
+        when(bookService.getAllBooks()).thenThrow(new RuntimeException("Database is down"));
+
+        mockMvc.perform(get("/api/v1/books")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status").value(500))
+                .andExpect(jsonPath("$.error").value("Internal Server Error"))
+                .andExpect(jsonPath("$.message").value("Unexpected error occurred while fetching books"))
+                .andExpect(jsonPath("$.path").value("/api/v1/books"));
+
+        verify(bookService, times(1)).getAllBooks();
     }
 
 }
