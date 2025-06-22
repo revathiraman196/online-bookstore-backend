@@ -67,7 +67,7 @@ class CartControllerTest {
                 .thenThrow(new DataNotFoundException("Book not found"));
 
         // Act & Assert
-        mockMvc.perform(post("/api/cart/add")
+        mockMvc.perform(post("/api/v1/cart/add")
                         .param("bookId", String.valueOf(bookId))
                         .param("quantity", String.valueOf(quantity))
                         .contentType(MediaType.APPLICATION_JSON))

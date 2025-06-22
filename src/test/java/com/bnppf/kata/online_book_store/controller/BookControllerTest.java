@@ -82,7 +82,7 @@ class BookControllerTest {
         mockMvc.perform(get("/api/v1/books")
                         .contentType(MediaType.APPLICATION_JSON))
                 // Then: Expect no content
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
         // Verify that bookService.getAllBooks() was called exactly once during the test
         verify(bookService, times(1)).getAllBooks();
     }

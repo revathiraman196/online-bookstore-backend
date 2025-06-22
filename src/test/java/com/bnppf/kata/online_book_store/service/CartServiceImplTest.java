@@ -107,5 +107,41 @@ class CartServiceImplTest {
         verify(cartItemRepository, never()).save(any());
         verify(cartItemMapper, never()).toResponseDTO(any());
     }
+    @Test
+    void removeFromCart_shouldDelete_whenCartItemExists() {
+        // Arrange
+        Long cartItemId = 1L;
+
+        // Simulate that the cart item exists
+        when(cartItemRepository.existsById(cartItemId)).thenReturn(true);
+
+        // Act
+        cartService.removeFromCart(cartItemId);
+
+        // Assert
+        // Verify that the repository's deleteById() was called with the expected ID
+        verify(cartItemRepository).deleteById(cartItemId);
+    }
+
+    @Test
+    void removeFromCart_shouldThrowException_whenCartItemDoesNotExist() {
+        // Arrange
+        Long cartItemId = 2L;
+
+        // Simulate that the cart item does not exist
+        when(cartItemRepository.existsById(cartItemId)).thenReturn(false);
+
+        // Act & Assert
+        // Expect a DataNotFoundException to be thrown when removing a non-existent item
+        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
+            cartService.removeFromCart(cartItemId);
+        });
+
+        // Check that the exception message is as expected
+        assertEquals("Cart item with ID 2 not found.", exception.getMessage());
+
+        // Ensure deleteById() is never called when item does not exist
+        verify(cartItemRepository, never()).deleteById(anyLong());
+    }
 }
 

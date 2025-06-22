@@ -17,9 +17,18 @@ public class GlobalExceptionHandler {
      * Handles custom DataNotFoundException (e.g., no books found).
      */
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<Void> handleDataNotFound(DataNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleDataNotFound(DataNotFoundException ex, HttpServletRequest request) {
         log.warn("Data not found: {}", ex.getMessage());
-        return ResponseEntity.noContent().build(); // 204 No Content
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     /**

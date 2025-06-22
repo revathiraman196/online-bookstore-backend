@@ -1,7 +1,7 @@
 ###
 POST http://localhost:8081/api/v1/cart/add?
     bookId=1&
-    quantity={{$random.integer(2)}}
+    quantity=2
 
 
 

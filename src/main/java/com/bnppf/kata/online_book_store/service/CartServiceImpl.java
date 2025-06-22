@@ -45,4 +45,17 @@ public class CartServiceImpl implements CartService {
 
         return  cartItemMapper.toResponseDTO(saved);
     }
+    /**
+     * Removes a cart item by its ID.
+     *
+     * @param cartItemId ID of the cart item to remove
+     * @throws DataNotFoundException if the cart item does not exist
+     */
+    public void removeFromCart(Long cartItemId) {
+        boolean exists = cartItemRepository.existsById(cartItemId);
+        if (!exists) {
+            throw new DataNotFoundException("Cart item with ID " + cartItemId + " not found.");
+        }
+        cartItemRepository.deleteById(cartItemId);
+    }
 }
