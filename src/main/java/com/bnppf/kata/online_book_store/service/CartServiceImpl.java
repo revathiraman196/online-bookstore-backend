@@ -23,6 +23,7 @@ public class CartServiceImpl implements CartService {
     }
 
     // Adds a book to the shopping cart
+    @Override
     public CartItemDto addToCart(Long bookId, int quantity) {
         // Try to find the book in the repository by its ID
         // If the book is not found, an exception is thrown
@@ -51,11 +52,35 @@ public class CartServiceImpl implements CartService {
      * @param cartItemId ID of the cart item to remove
      * @throws DataNotFoundException if the cart item does not exist
      */
+    @Override
     public void removeFromCart(Long cartItemId) {
         boolean exists = cartItemRepository.existsById(cartItemId);
         if (!exists) {
             throw new DataNotFoundException("Cart item with ID " + cartItemId + " not found.");
         }
         cartItemRepository.deleteById(cartItemId);
+    }
+    /**
+     * Updates the quantity of an existing cart item.
+     *
+     * @param cartItemId the ID of the cart item to update
+     * @param quantity   the new quantity to set
+     * @return updated CartItemDto after saving
+     * @throws DataNotFoundException if cart item with given ID does not exist
+     */
+    @Override
+    public CartItemDto updateCartItemQuantity(Long cartItemId, int quantity) {
+        // Fetch cart item by ID or throw exception if not found
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new DataNotFoundException("Cart item with ID " + cartItemId + " not found."));
+
+        // Update the quantity field
+        cartItem.setQuantity(quantity);
+
+        // Save the updated cart item entity back to the repository (DB)
+        CartItem updatedItem = cartItemRepository.save(cartItem);
+
+        // Convert the updated entity to DTO to return
+        return cartItemMapper.toResponseDTO(updatedItem);
     }
 }

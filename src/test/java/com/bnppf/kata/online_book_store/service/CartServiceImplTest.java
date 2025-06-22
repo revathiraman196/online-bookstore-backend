@@ -143,5 +143,76 @@ class CartServiceImplTest {
         // Ensure deleteById() is never called when item does not exist
         verify(cartItemRepository, never()).deleteById(anyLong());
     }
+
+    /**
+     * Test the successful update of cart item quantity.
+     */
+    @Test
+    void updateCartItemQuantity_ShouldUpdateQuantity_WhenCartItemExists() {
+        // Given
+        Long cartItemId = 1L;
+        int newQuantity = 5;
+
+        CartItem existingCartItem = new CartItem();
+        existingCartItem.setId(cartItemId);
+        existingCartItem.setQuantity(2);
+
+        CartItem updatedCartItem = new CartItem();
+        updatedCartItem.setId(cartItemId);
+        updatedCartItem.setQuantity(newQuantity);
+
+        CartItemDto expectedDto = new CartItemDto();
+        // set DTO fields accordingly, e.g., expectedDto.setQuantity(newQuantity);
+
+        // When repository finds the cart item
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(existingCartItem));
+
+        // When saving the updated cart item, return the updated entity
+        when(cartItemRepository.save(existingCartItem)).thenReturn(updatedCartItem);
+
+        // When mapping the saved cart item to DTO
+        when(cartItemMapper.toResponseDTO(updatedCartItem)).thenReturn(expectedDto);
+
+        // Call the method under test
+        CartItemDto actualDto = cartService.updateCartItemQuantity(cartItemId, newQuantity);
+
+        // Then verify the quantity was updated on the entity
+        assertEquals(newQuantity, existingCartItem.getQuantity());
+
+        // And the returned DTO is the expected one
+        assertSame(expectedDto, actualDto);
+
+        // Verify repository interactions
+        verify(cartItemRepository).findById(cartItemId);
+        verify(cartItemRepository).save(existingCartItem);
+        verify(cartItemMapper).toResponseDTO(updatedCartItem);
+    }
+
+    /**
+     * Test that updateCartItemQuantity throws DataNotFoundException
+     * when the cart item does not exist.
+     */
+    @Test
+    void updateCartItemQuantity_ShouldThrowException_WhenCartItemNotFound() {
+        Long cartItemId = 999L;
+        int newQuantity = 3;
+
+        // Simulate cart item not found
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.empty());
+
+        // Expect exception when calling the method
+        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
+            cartService.updateCartItemQuantity(cartItemId, newQuantity);
+        });
+
+        // Verify exception message contains the cartItemId
+        assertTrue(exception.getMessage().contains(cartItemId.toString()));
+
+        // Verify repository findById was called
+        verify(cartItemRepository).findById(cartItemId);
+
+        // Verify no save operation was attempted
+        verify(cartItemRepository, never()).save(any());
+    }
 }
 
