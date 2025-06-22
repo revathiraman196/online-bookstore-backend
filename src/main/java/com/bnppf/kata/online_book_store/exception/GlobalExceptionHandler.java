@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     /**
      * Handles all uncaught exceptions (fallback).
      */
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({RuntimeException.class,Exception.class})
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
         log.error("Unexpected error occurred", ex);
 
@@ -48,4 +48,5 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
+
 }

@@ -97,7 +97,7 @@ class CartControllerTest {
         when(cartService.updateCartItemQuantity(cartItemId, quantity)).thenReturn(updatedDto);
 
         // Act & Assert
-        mockMvc.perform(put("/api/v1/cart/items/update", cartItemId)
+        mockMvc.perform(put("/api/v1/cart/items/{cartItemId}", cartItemId)
                         .param("quantity", String.valueOf(quantity))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
