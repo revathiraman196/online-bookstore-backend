@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Online Bookstore API
+  description: REST API for Online Bookstore
+  version: 1.0.0
+  contact:
+    name: SquadName
+    email: squadEmailAddress
+servers:
+  - url: http://localhost:8080
+    description: Local server
+  - url: http://bookstoredev.secure.bnppf:8080
+    description: dev server
+  - url: http://bookstorepp.secure.bnppf:8080
+    description: pp server
+security:
+  - BasicAuth: []  # Applying BasicAuth globally to all endpoints
+paths:
+  /api/books:
+    get:
+      summary: Get all books
+      description: Returns a list of all books available in the bookstore
+      security:
+        - BasicAuth: [ ]  # Securing this endpoint with BasicAuth
+      responses:
+        '200':
+          description: A JSON array of book objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request — Invalid query parameters or filters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error — Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: The Pragmatic Programmer
+        author:
+          type: string
+          example: Andy Hunt
+        price:
+          type: number
+          format: double
+          example: 42.99
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-06-21T14:32:00Z"
+        status:
+          type: integer
+          example: 500
+        error:
+          type: string
+          example: Internal Server Error
+        message:
+          type: string
+          example: Unexpected error occurred while retrieving book list
+        path:
+          type: string
+          example: /api/books
