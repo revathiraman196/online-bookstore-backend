@@ -4,12 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-# Ignore the IntelliJ IDEA project directory
-.idea/
-
-# Ignore compiled Java classes and build artifacts
-target/
-
 # Ignore Spring Boot specific files
 *.log
 *.class
@@ -43,3 +37,5 @@ build/
 
 ### VS Code ###
 .vscode/
+# Ignore system-specific files
+.DS_Store   # macOS system files
