@@ -4,6 +4,18 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignore the IntelliJ IDEA project directory
+.idea/
+
+# Ignore compiled Java classes and build artifacts
+target/
+
+# Ignore Spring Boot specific files
+*.log
+*.class
+*.jar
+*.war
+
 ### STS ###
 .apt_generated
 .classpath
