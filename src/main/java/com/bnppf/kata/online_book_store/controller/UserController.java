@@ -1,5 +1,6 @@
 package com.bnppf.kata.online_book_store.controller;
 
+import com.bnppf.kata.online_book_store.dto.LoginRequest;
 import com.bnppf.kata.online_book_store.dto.RegisterRequest;
 import com.bnppf.kata.online_book_store.dto.UserResponse;
 import com.bnppf.kata.online_book_store.service.UserService;
@@ -23,5 +24,10 @@ public class UserController {
         UserResponse user = userService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(user); // HTTP 201
 
+    }
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest request) {
+        UserResponse user = userService.login(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }

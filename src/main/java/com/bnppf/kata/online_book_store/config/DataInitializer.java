@@ -28,11 +28,17 @@ public class DataInitializer {
                 Book book1 = new Book(1L, "Java 17", "Joshua Bloch", 45.00);
                 Book book2 = new Book(2L, "Clean Code", "Robert C. Martin", 38.50);
                 Book book3 = new Book(3L, "Spring in Action", "Craig Walls", 35.00);
+                Book book4 = new Book(4L, "AI Generative", "Joshua Bloch", 48.00);
+                Book book5 = new Book(5L, "Mockito Code", "Robert C. Martin", 35.50);
+                Book book6 = new Book(6L, "Angular 16", "Craig Walls", 65.00);
 
                 // Save data to the H2 database
                 bookRepository.save(book1);
                 bookRepository.save(book2);
                 bookRepository.save(book3);
+                bookRepository.save(book4);
+                bookRepository.save(book5);
+                bookRepository.save(book6);
 
 
                 log.info("Books have been saved to the H2 database.");

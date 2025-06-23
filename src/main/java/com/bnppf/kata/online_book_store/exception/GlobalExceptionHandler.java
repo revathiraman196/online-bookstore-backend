@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.UNAUTHORIZED.value(),
-                "user already exist",
+                "Invalid username or password",
                 ex.getMessage(),
                 request.getRequestURI()
         );
@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "user already exist",
+                ex.getMessage(),
                 ex.getMessage(),
                 request.getRequestURI()
         );
