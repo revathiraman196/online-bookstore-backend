@@ -1,0 +1,9 @@
+POST http://localhost:8081/api/auth/register
+Authorization: Basic a2F0YXRlc3Q6a2F0YXRlc3RAMTIz
+Content-Type: application/json
+
+{
+  "username": "Revathi",
+  "email": "Rev@gmail.com",
+  "password": "rev1467"
+}

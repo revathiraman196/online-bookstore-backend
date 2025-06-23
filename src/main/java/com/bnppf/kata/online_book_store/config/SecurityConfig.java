@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(AUTH_WHITELIST).permitAll()
+                                .requestMatchers("/api/auth/register").permitAll()
                                 .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
