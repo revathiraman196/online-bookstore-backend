@@ -44,7 +44,7 @@ class UserControllerTest {
 
         when(userService.register(request)).thenReturn(response);
 
-        mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -57,7 +57,7 @@ class UserControllerTest {
     void register_shouldReturn400_whenInvalidInput() throws Exception {
         RegisterRequest invalidRequest = new RegisterRequest("john", "invalid-email", "");
 
-        mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest());
@@ -74,7 +74,7 @@ class UserControllerTest {
         when(userService.login(any(LoginRequest.class))).thenReturn(userResponse);
 
         // When & Then
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isCreated())
@@ -90,7 +90,7 @@ class UserControllerTest {
         // Missing username and password
         LoginRequest invalidRequest = new LoginRequest();
 
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest());
