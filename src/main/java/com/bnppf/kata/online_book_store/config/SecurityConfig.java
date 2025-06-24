@@ -57,7 +57,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        //ToDO modify the the permit all and authenticate related path based on login and Anonymous user
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(corsConfiguration -> corsConfiguration.configurationSource(corsConfigurationSource()) )
                 .authorizeHttpRequests(auth ->
@@ -77,6 +77,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    //TODO implement the Authentication based on the login using JWT
     @Bean
     public UserDetailsService userDetailsService() {
         LOG.debug("username {} :: password {}",username,password);
