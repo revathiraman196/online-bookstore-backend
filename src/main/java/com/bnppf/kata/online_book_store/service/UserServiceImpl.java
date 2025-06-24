@@ -8,7 +8,6 @@ import com.bnppf.kata.online_book_store.exception.InvalidCredentialsException;
 import com.bnppf.kata.online_book_store.exception.UserAlreadyExistsException;
 import com.bnppf.kata.online_book_store.repository.UserRepository;
 import com.bnppf.kata.online_book_store.utility.UserMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

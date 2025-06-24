@@ -2,7 +2,7 @@
 POST http://localhost:8081/api/v1/cart/add?
     bookId=2&
     quantity=2
-Authorization: Basic a2F0YXRlc3Q6a2F0YXRlc3RAMTIz
+Authorization: Basic
 
 ###  non existing bookId
 POST http://localhost:8081/api/v1/cart/add?
@@ -11,16 +11,16 @@ POST http://localhost:8081/api/v1/cart/add?
 
 ###
 DELETE http://localhost:8081/api/v1/cart/items/1
-Authorization: Basic a2F0YXRlc3Q6a2F0YXRlc3RAMTIz
+Authorization: Basic
 
 ### non existing Id
 DELETE http://localhost:8081/api/v1/cart/items/4
-Authorization: Basic a2F0YXRlc3Q6a2F0YXRlc3RAMTIz
+Authorization: Basic
 
 
 ###
 PUT http://localhost:8081/api/v1/cart/items/1?quantity=4
-Authorization: Basic a2F0YXRlc3Q6a2F0YXRlc3RAMTIz
+Authorization: Basic
 
 
 
